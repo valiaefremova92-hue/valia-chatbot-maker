@@ -109,4 +109,3 @@ portfolioNext?.addEventListener('click', () => scrollPortfolio(1));
 portfolioTrack?.addEventListener('scroll', updatePortfolioArrows, { passive: true });
 window.addEventListener('resize', updatePortfolioArrows);
 updatePortfolioArrows();
-
