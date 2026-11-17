@@ -108,15 +108,40 @@
     <section class="portfolio-preview" id="portfolio">
       <div class="section-heading">
         <div><span class="section-kicker">ПРАКТИКА В ДІЇ</span><h2>Приклади та кейси</h2></div>
-        <p>Рішення для різних задач і ніш — від автоматичних відповідей до інтерактивних міні-застосунків.</p>
+        <p>Реальні рішення для різних задач — від презентації послуг і запису до автоматизації в Instagram та Telegram Mini Apps.</p>
       </div>
-      <div class="portfolio-placeholder">
-        <div class="portfolio-tile"><span class="portfolio-icon">➤</span><b>Telegram-боти</b><small>Візитки, запис, навчання</small></div>
-        <div class="portfolio-tile"><span class="portfolio-icon">◎</span><b>Instagram-воронки</b><small>Direct та лід-магніти</small></div>
-        <div class="portfolio-tile"><span class="portfolio-icon">▦</span><b>Mini Apps</b><small>Інтерактивні рішення</small></div>
+      <div class="portfolio-grid">
+        <button class="case-card" type="button" data-video="T3id97A9O-E" aria-label="Переглянути відео: Telegram-бот-візитка">
+          <img src="assets/case-01-telegram-visitka.png" alt="Telegram-бот-візитка" loading="lazy">
+          <span class="case-card-caption"><strong>Telegram-бот-візитка</strong><span>Переглянути кейс <i>↗</i></span></span>
+        </button>
+        <button class="case-card" type="button" data-video="c2G1fBfMIUo" aria-label="Переглянути відео: Онлайн-запис у Telegram">
+          <img src="assets/case-02-online-booking.png" alt="Онлайн-запис у Telegram" loading="lazy">
+          <span class="case-card-caption"><strong>Онлайн-запис у Telegram</strong><span>Переглянути кейс <i>↗</i></span></span>
+        </button>
+        <button class="case-card" type="button" data-video="W0uQ3bvmzws" aria-label="Переглянути відео: Instagram-автоматизація">
+          <img src="assets/case-03-instagram-automation.png" alt="Instagram-автоматизація" loading="lazy">
+          <span class="case-card-caption"><strong>Instagram-автоматизація</strong><span>Переглянути кейс <i>↗</i></span></span>
+        </button>
+        <button class="case-card" type="button" data-video="uLD6XYDZAbM" aria-label="Переглянути відео: Карта дня">
+          <img src="assets/case-04-card-of-day.png" alt="Карта дня" loading="lazy">
+          <span class="case-card-caption"><strong>Карта дня</strong><span>Переглянути кейс <i>↗</i></span></span>
+        </button>
+        <button class="case-card" type="button" data-video="zC3pWv1pvF0" aria-label="Переглянути відео: Автоматичні розрахунки">
+          <img src="assets/case-05-auto-calculations.png" alt="Автоматичні розрахунки" loading="lazy">
+          <span class="case-card-caption"><strong>Автоматичні розрахунки</strong><span>Переглянути кейс <i>↗</i></span></span>
+        </button>
       </div>
-      <p class="content-note">Це стартова структура портфоліо. Далі додамо твої реальні відео, скриншоти та посилання на демонстрації.</p>
+      <p class="content-note">Натисніть на обкладинку, щоб переглянути відеоогляд проєкту.</p>
     </section>
+
+    <div class="video-modal" id="case-video-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Відеоогляд кейсу">
+      <button class="video-modal-backdrop" type="button" data-close-video aria-label="Закрити відео"></button>
+      <div class="video-modal-panel">
+        <button class="video-modal-close" type="button" data-close-video aria-label="Закрити відео">×</button>
+        <div class="video-frame" id="case-video-frame"></div>
+      </div>
+    </div>
 
     <section class="gift-banner" id="gift">
       <div class="gift-wheel" aria-hidden="true"><div class="wheel-core">✦</div></div>
