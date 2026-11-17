@@ -43,3 +43,4 @@ if ('IntersectionObserver' in window) {
     observer.observe(el);
   });
 }
+
