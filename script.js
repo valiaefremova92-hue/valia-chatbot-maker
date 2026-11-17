@@ -44,7 +44,7 @@ if ('IntersectionObserver' in window) {
   });
 }
 
-\n// Open vertical YouTube case videos only after a portfolio-card click.
+// Open vertical YouTube case videos only after a portfolio-card click.
 const caseModal = document.querySelector('#case-video-modal');
 const caseVideoFrame = document.querySelector('#case-video-frame');
 const caseCards = document.querySelectorAll('.case-card[data-video]');
@@ -90,19 +90,14 @@ const portfolioTrack = document.querySelector('#portfolio-track');
 const portfolioPrev = document.querySelector('.portfolio-arrow-prev');
 const portfolioNext = document.querySelector('.portfolio-arrow-next');
 
-function portfolioMaxScroll() {
-  if (!portfolioTrack) return 0;
-  return Math.max(0, portfolioTrack.scrollWidth - portfolioTrack.clientWidth);
-}
-
 function updatePortfolioArrows() {
   if (!portfolioTrack || !portfolioPrev || !portfolioNext) return;
-  const maxScroll = portfolioMaxScroll();
-  const hasOverflow = maxScroll > 3;
+  const maxScroll = Math.max(0, portfolioTrack.scrollWidth - portfolioTrack.clientWidth);
+  const hasOverflow = maxScroll > 2;
   portfolioPrev.hidden = !hasOverflow;
   portfolioNext.hidden = !hasOverflow;
-  portfolioPrev.disabled = !hasOverflow || portfolioTrack.scrollLeft <= 3;
-  portfolioNext.disabled = !hasOverflow || portfolioTrack.scrollLeft >= maxScroll - 3;
+  portfolioPrev.disabled = !hasOverflow || portfolioTrack.scrollLeft <= 2;
+  portfolioNext.disabled = !hasOverflow || portfolioTrack.scrollLeft >= maxScroll - 2;
 }
 
 function scrollPortfolio(direction) {
@@ -110,23 +105,24 @@ function scrollPortfolio(direction) {
   const cards = Array.from(portfolioTrack.querySelectorAll('.case-card'));
   if (!cards.length) return;
 
-  const trackRect = portfolioTrack.getBoundingClientRect();
-  const currentLeft = portfolioTrack.scrollLeft;
-  const gap = parseFloat(getComputedStyle(portfolioTrack).columnGap || getComputedStyle(portfolioTrack).gap) || 0;
+  const current = portfolioTrack.scrollLeft;
+  const tolerance = 3;
+  let targetCard;
 
-  // Use the actual card width, then clamp to the final scroll position.
-  const step = cards[0].getBoundingClientRect().width + gap;
-  const target = Math.max(0, Math.min(portfolioMaxScroll(), currentLeft + direction * step));
-  portfolioTrack.scrollTo({ left: target, behavior: 'smooth' });
-  window.setTimeout(updatePortfolioArrows, 350);
+  if (direction > 0) {
+    targetCard = cards.find(card => card.offsetLeft > current + tolerance);
+    if (!targetCard) return;
+  } else {
+    targetCard = [...cards].reverse().find(card => card.offsetLeft < current - tolerance);
+    if (!targetCard) return;
+  }
+
+  portfolioTrack.scrollTo({ left: targetCard.offsetLeft, behavior: 'smooth' });
 }
 
 portfolioPrev?.addEventListener('click', () => scrollPortfolio(-1));
 portfolioNext?.addEventListener('click', () => scrollPortfolio(1));
 portfolioTrack?.addEventListener('scroll', updatePortfolioArrows, { passive: true });
 window.addEventListener('resize', updatePortfolioArrows);
-portfolioTrack?.querySelectorAll('img').forEach(img => {
-  if (!img.complete) img.addEventListener('load', updatePortfolioArrows, { once: true });
-});
 window.addEventListener('load', updatePortfolioArrows);
-requestAnimationFrame(updatePortfolioArrows);
+updatePortfolioArrows();
