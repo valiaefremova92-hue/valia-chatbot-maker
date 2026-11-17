@@ -1,3 +1,4 @@
+
 const menuToggle = document.querySelector('.menu-toggle');
 const mainNav = document.querySelector('.main-nav');
 const toast = document.querySelector('.toast');
@@ -44,6 +45,7 @@ if ('IntersectionObserver' in window) {
   });
 }
 
+
 // Open vertical YouTube case videos only after a portfolio-card click.
 const caseModal = document.querySelector('#case-video-modal');
 const caseVideoFrame = document.querySelector('#case-video-frame');
@@ -85,44 +87,66 @@ document.addEventListener('keydown', event => {
   if (event.key === 'Escape' && caseModal?.classList.contains('is-open')) closeCaseVideo();
 });
 
-// Portfolio carousel controls — scroll exactly one card at a time.
+// Portfolio carousel controls — move by one card plus its gap.
 const portfolioTrack = document.querySelector('#portfolio-track');
 const portfolioPrev = document.querySelector('.portfolio-arrow-prev');
 const portfolioNext = document.querySelector('.portfolio-arrow-next');
 
 function updatePortfolioArrows() {
   if (!portfolioTrack || !portfolioPrev || !portfolioNext) return;
+
   const maxScroll = Math.max(0, portfolioTrack.scrollWidth - portfolioTrack.clientWidth);
   const hasOverflow = maxScroll > 2;
+
   portfolioPrev.hidden = !hasOverflow;
   portfolioNext.hidden = !hasOverflow;
   portfolioPrev.disabled = !hasOverflow || portfolioTrack.scrollLeft <= 2;
   portfolioNext.disabled = !hasOverflow || portfolioTrack.scrollLeft >= maxScroll - 2;
 }
 
+function getPortfolioStep() {
+  if (!portfolioTrack) return 0;
+
+  const firstCard = portfolioTrack.querySelector('.case-card');
+  if (!firstCard) return portfolioTrack.clientWidth;
+
+  const trackStyles = window.getComputedStyle(portfolioTrack);
+  const gap = parseFloat(trackStyles.columnGap || trackStyles.gap) || 0;
+  return firstCard.getBoundingClientRect().width + gap;
+}
+
 function scrollPortfolio(direction) {
   if (!portfolioTrack) return;
-  const cards = Array.from(portfolioTrack.querySelectorAll('.case-card'));
-  if (!cards.length) return;
 
-  const current = portfolioTrack.scrollLeft;
-  const tolerance = 3;
-  let targetCard;
+  const step = getPortfolioStep();
+  if (!step) return;
 
-  if (direction > 0) {
-    targetCard = cards.find(card => card.offsetLeft > current + tolerance);
-    if (!targetCard) return;
-  } else {
-    targetCard = [...cards].reverse().find(card => card.offsetLeft < current - tolerance);
-    if (!targetCard) return;
-  }
-
-  portfolioTrack.scrollTo({ left: targetCard.offsetLeft, behavior: 'smooth' });
+  portfolioTrack.scrollBy({
+    left: direction * step,
+    behavior: 'smooth'
+  });
 }
 
 portfolioPrev?.addEventListener('click', () => scrollPortfolio(-1));
 portfolioNext?.addEventListener('click', () => scrollPortfolio(1));
+
 portfolioTrack?.addEventListener('scroll', updatePortfolioArrows, { passive: true });
 window.addEventListener('resize', updatePortfolioArrows);
+
+if (portfolioTrack) {
+  const portfolioImages = portfolioTrack.querySelectorAll('img');
+  portfolioImages.forEach(image => {
+    if (!image.complete) {
+      image.addEventListener('load', updatePortfolioArrows, { once: true });
+      image.addEventListener('error', updatePortfolioArrows, { once: true });
+    }
+  });
+
+  if ('ResizeObserver' in window) {
+    const portfolioResizeObserver = new ResizeObserver(updatePortfolioArrows);
+    portfolioResizeObserver.observe(portfolioTrack);
+  }
+}
+
 window.addEventListener('load', updatePortfolioArrows);
-updatePortfolioArrows();
+requestAnimationFrame(updatePortfolioArrows);
