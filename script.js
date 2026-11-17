@@ -44,3 +44,69 @@ if ('IntersectionObserver' in window) {
   });
 }
 
+\n// Open vertical YouTube case videos only after a portfolio-card click.
+const caseModal = document.querySelector('#case-video-modal');
+const caseVideoFrame = document.querySelector('#case-video-frame');
+const caseCards = document.querySelectorAll('.case-card[data-video]');
+let previouslyFocusedCaseCard = null;
+
+function closeCaseVideo() {
+  if (!caseModal || !caseVideoFrame) return;
+  caseModal.classList.remove('is-open');
+  caseModal.setAttribute('aria-hidden', 'true');
+  caseVideoFrame.replaceChildren();
+  document.body.classList.remove('video-open');
+  previouslyFocusedCaseCard?.focus();
+}
+
+caseCards.forEach(card => {
+  card.addEventListener('click', () => {
+    const videoId = card.dataset.video;
+    if (!videoId || !caseModal || !caseVideoFrame) return;
+    previouslyFocusedCaseCard = card;
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?autoplay=1&rel=0`;
+    iframe.title = 'Відеоогляд кейсу';
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+    iframe.allowFullscreen = true;
+    iframe.loading = 'eager';
+    caseVideoFrame.replaceChildren(iframe);
+    caseModal.classList.add('is-open');
+    caseModal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('video-open');
+    caseModal.querySelector('.video-modal-close')?.focus();
+  });
+});
+
+caseModal?.querySelectorAll('[data-close-video]').forEach(button => {
+  button.addEventListener('click', closeCaseVideo);
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && caseModal?.classList.contains('is-open')) closeCaseVideo();
+});
+
+// Portfolio carousel controls; new case cards can be appended to the same track.
+const portfolioTrack = document.querySelector('#portfolio-track');
+const portfolioPrev = document.querySelector('.portfolio-arrow-prev');
+const portfolioNext = document.querySelector('.portfolio-arrow-next');
+function updatePortfolioArrows() {
+  if (!portfolioTrack || !portfolioPrev || !portfolioNext) return;
+  const maxScroll = portfolioTrack.scrollWidth - portfolioTrack.clientWidth;
+  portfolioPrev.disabled = portfolioTrack.scrollLeft <= 2;
+  portfolioNext.disabled = portfolioTrack.scrollLeft >= maxScroll - 2;
+  const hasOverflow = maxScroll > 2;
+  portfolioPrev.hidden = !hasOverflow;
+  portfolioNext.hidden = !hasOverflow;
+}
+function scrollPortfolio(direction) {
+  if (!portfolioTrack) return;
+  const firstCard = portfolioTrack.querySelector('.case-card');
+  const step = firstCard ? firstCard.getBoundingClientRect().width + parseFloat(getComputedStyle(portfolioTrack).gap || 0) : portfolioTrack.clientWidth;
+  portfolioTrack.scrollBy({ left: direction * step, behavior: 'smooth' });
+}
+portfolioPrev?.addEventListener('click', () => scrollPortfolio(-1));
+portfolioNext?.addEventListener('click', () => scrollPortfolio(1));
+portfolioTrack?.addEventListener('scroll', updatePortfolioArrows, { passive: true });
+window.addEventListener('resize', updatePortfolioArrows);
+updatePortfolioArrows();
+
