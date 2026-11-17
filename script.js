@@ -85,27 +85,48 @@ document.addEventListener('keydown', event => {
   if (event.key === 'Escape' && caseModal?.classList.contains('is-open')) closeCaseVideo();
 });
 
-// Portfolio carousel controls; new case cards can be appended to the same track.
+// Portfolio carousel controls — scroll exactly one card at a time.
 const portfolioTrack = document.querySelector('#portfolio-track');
 const portfolioPrev = document.querySelector('.portfolio-arrow-prev');
 const portfolioNext = document.querySelector('.portfolio-arrow-next');
+
+function portfolioMaxScroll() {
+  if (!portfolioTrack) return 0;
+  return Math.max(0, portfolioTrack.scrollWidth - portfolioTrack.clientWidth);
+}
+
 function updatePortfolioArrows() {
   if (!portfolioTrack || !portfolioPrev || !portfolioNext) return;
-  const maxScroll = portfolioTrack.scrollWidth - portfolioTrack.clientWidth;
-  portfolioPrev.disabled = portfolioTrack.scrollLeft <= 2;
-  portfolioNext.disabled = portfolioTrack.scrollLeft >= maxScroll - 2;
-  const hasOverflow = maxScroll > 2;
+  const maxScroll = portfolioMaxScroll();
+  const hasOverflow = maxScroll > 3;
   portfolioPrev.hidden = !hasOverflow;
   portfolioNext.hidden = !hasOverflow;
+  portfolioPrev.disabled = !hasOverflow || portfolioTrack.scrollLeft <= 3;
+  portfolioNext.disabled = !hasOverflow || portfolioTrack.scrollLeft >= maxScroll - 3;
 }
+
 function scrollPortfolio(direction) {
   if (!portfolioTrack) return;
-  const firstCard = portfolioTrack.querySelector('.case-card');
-  const step = firstCard ? firstCard.getBoundingClientRect().width + parseFloat(getComputedStyle(portfolioTrack).gap || 0) : portfolioTrack.clientWidth;
-  portfolioTrack.scrollBy({ left: direction * step, behavior: 'smooth' });
+  const cards = Array.from(portfolioTrack.querySelectorAll('.case-card'));
+  if (!cards.length) return;
+
+  const trackRect = portfolioTrack.getBoundingClientRect();
+  const currentLeft = portfolioTrack.scrollLeft;
+  const gap = parseFloat(getComputedStyle(portfolioTrack).columnGap || getComputedStyle(portfolioTrack).gap) || 0;
+
+  // Use the actual card width, then clamp to the final scroll position.
+  const step = cards[0].getBoundingClientRect().width + gap;
+  const target = Math.max(0, Math.min(portfolioMaxScroll(), currentLeft + direction * step));
+  portfolioTrack.scrollTo({ left: target, behavior: 'smooth' });
+  window.setTimeout(updatePortfolioArrows, 350);
 }
+
 portfolioPrev?.addEventListener('click', () => scrollPortfolio(-1));
 portfolioNext?.addEventListener('click', () => scrollPortfolio(1));
 portfolioTrack?.addEventListener('scroll', updatePortfolioArrows, { passive: true });
 window.addEventListener('resize', updatePortfolioArrows);
-updatePortfolioArrows();
+portfolioTrack?.querySelectorAll('img').forEach(img => {
+  if (!img.complete) img.addEventListener('load', updatePortfolioArrows, { once: true });
+});
+window.addEventListener('load', updatePortfolioArrows);
+requestAnimationFrame(updatePortfolioArrows);
