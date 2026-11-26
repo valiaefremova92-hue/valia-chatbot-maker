@@ -440,3 +440,68 @@ body.review-open { overflow: hidden; }
   .about-facts { margin: 17px 0 12px; gap: 32px; }
   .about-fact strong { font-size: 25px; }
 }
+
+
+/* Final polish: chatbot brand mark, social icons and process illustrations */
+.brand-mark {
+  color: #fff;
+  flex: 0 0 30px;
+}
+.brand-mark svg {
+  display: block;
+  width: 23px;
+  height: 23px;
+}
+.brand > span:last-child { white-space: nowrap; }
+.brand > span:last-child i { margin: 0 3px; color: #b8a294; font-style: normal; }
+.contact-actions .button { gap: 10px; }
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 19px;
+  height: 19px;
+  flex: 0 0 19px;
+}
+.social-icon svg { display: block; width: 19px; height: 19px; }
+.process-step {
+  min-height: 118px;
+  padding: 13px 10px 15px;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+}
+.process-step .process-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 43px;
+  height: 43px;
+  color: #fffaf3;
+}
+.process-step .process-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.process-step b {
+  font-size: 12px;
+  line-height: 1.4;
+}
+@media (max-width: 980px) {
+  .brand { font-size: 10px; }
+  .brand b { font-size: 9px; }
+  .process-step b { font-size: 11px; }
+}
+@media (max-width: 700px) {
+  .brand { max-width: calc(100vw - 90px); font-size: 9px; gap: 6px; }
+  .brand > span:last-child { white-space: normal; line-height: 1.25; }
+  .brand b { font-size: 8px; }
+  .brand-mark { width: 25px; height: 25px; flex-basis: 25px; }
+  .brand-mark svg { width: 20px; height: 20px; }
+  .process-step { min-height: 112px; padding: 12px 8px; }
+  .process-step .process-icon { width: 38px; height: 38px; }
+  .process-step b { font-size: 11px; }
+  .contact-actions .button { min-height: 44px; padding: 0 16px; gap: 8px; }
+  .social-icon, .social-icon svg { width: 18px; height: 18px; flex-basis: 18px; }
+}
