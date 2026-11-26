@@ -22,13 +22,9 @@ mainNav?.querySelectorAll('a').forEach(link => {
   });
 });
 
-document.querySelector('#gift-preview')?.addEventListener('click', () => {
-  showToast('Колесо подарунків додамо на наступному етапі ✨');
-});
-
 // Smoothly reveal sections as they enter the viewport.
 const revealTargets = document.querySelectorAll(
-  '.service-card, .process-step, .portfolio-tile, .gift-banner, .about-card, .reviews-card'
+  '.service-card, .process-step, .portfolio-tile, .about-card, .reviews-card'
 );
 if ('IntersectionObserver' in window) {
   const observer = new IntersectionObserver((entries, currentObserver) => {
