@@ -155,7 +155,19 @@
 
     <section class="about-reviews" id="reviews">
       <div class="about-card"><span class="section-kicker">ПРО МЕНЕ</span><h2>Технічна логіка.<br><em>Візуальна естетика.</em></h2><p>Я поєдную продуману логіку автоматизації з уважністю до деталей та візуального оформлення. Кожне рішення адаптую під задачу конкретного проєкту.</p><a href="#contacts" class="text-link">Обговорити ідею <span>↗</span></a></div>
-      <div class="reviews-card" id="reviews-preview"><span class="section-kicker">ДОВІРА В ДЕТАЛЯХ</span><h2>Відгуки клієнтів</h2><p>Тут зберемо реальні відгуки зі скриншотів листування та голосові повідомлення — без вигаданих цитат.</p><div class="review-mark">“</div><b>Реальні враження. Реальні проєкти.</b></div>
+      <div class="reviews-card" id="reviews-preview">
+        <span class="section-kicker">ДОВІРА В ДЕТАЛЯХ</span>
+        <h2>Відгуки клієнтів</h2>
+        <p>Найкраще про нашу роботу розкажуть ті, хто вже скористався моїми рішеннями.</p>
+        <div class="reviews-gallery-wrap">
+          <button class="reviews-arrow reviews-arrow-prev" type="button" aria-label="Попередні відгуки">‹</button>
+          <div class="reviews-gallery" id="reviews-gallery">
+            <button class="review-thumb" type="button" data-review-image="assets/reviews/review-01.jpg" aria-label="Відкрити відгук 1"><img src="assets/reviews/review-01.jpg" alt="Відгук клієнта 1" loading="lazy"></button><button class="review-thumb" type="button" data-review-image="assets/reviews/review-02.jpg" aria-label="Відкрити відгук 2"><img src="assets/reviews/review-02.jpg" alt="Відгук клієнта 2" loading="lazy"></button><button class="review-thumb" type="button" data-review-image="assets/reviews/review-03.jpg" aria-label="Відкрити відгук 3"><img src="assets/reviews/review-03.jpg" alt="Відгук клієнта 3" loading="lazy"></button><button class="review-thumb" type="button" data-review-image="assets/reviews/review-04.jpg" aria-label="Відкрити відгук 4"><img src="assets/reviews/review-04.jpg" alt="Відгук клієнта 4" loading="lazy"></button><button class="review-thumb" type="button" data-review-image="assets/reviews/review-05.jpg" aria-label="Відкрити відгук 5"><img src="assets/reviews/review-05.jpg" alt="Відгук клієнта 5" loading="lazy"></button><button class="review-thumb" type="button" data-review-image="assets/reviews/review-06.jpg" aria-label="Відкрити відгук 6"><img src="assets/reviews/review-06.jpg" alt="Відгук клієнта 6" loading="lazy"></button><button class="review-thumb" type="button" data-review-image="assets/reviews/review-07.jpg" aria-label="Відкрити відгук 7"><img src="assets/reviews/review-07.jpg" alt="Відгук клієнта 7" loading="lazy"></button><button class="review-thumb" type="button" data-review-image="assets/reviews/review-08.jpg" aria-label="Відкрити відгук 8"><img src="assets/reviews/review-08.jpg" alt="Відгук клієнта 8" loading="lazy"></button><button class="review-thumb" type="button" data-review-image="assets/reviews/review-09.jpg" aria-label="Відкрити відгук 9"><img src="assets/reviews/review-09.jpg" alt="Відгук клієнта 9" loading="lazy"></button>
+          </div>
+          <button class="reviews-arrow reviews-arrow-next" type="button" aria-label="Наступні відгуки">›</button>
+        </div>
+        <b>Реальні враження. Реальні проєкти.</b>
+      </div>
     </section>
 
     <section class="contact-section" id="contacts">
@@ -165,6 +177,12 @@
   </main>
 
   <footer class="site-footer"><a class="brand" href="#home"><span class="brand-mark">✳</span><span>ВАЛЯ ЄФРЕМОВА <i>|</i> <b>CHATBOT MAKER</b></span></a><span>Чат-боти · Автоматизація · Telegram Mini Apps</span><a href="#home">На початок ↑</a></footer>
+  <div class="review-lightbox" id="review-lightbox" aria-hidden="true">
+    <button class="review-lightbox-close" type="button" aria-label="Закрити відгук">×</button>
+    <button class="review-lightbox-prev" type="button" aria-label="Попередній відгук">‹</button>
+    <img class="review-lightbox-image" id="review-lightbox-image" src="" alt="Відгук клієнта">
+    <button class="review-lightbox-next" type="button" aria-label="Наступний відгук">›</button>
+  </div>
   <div class="toast" role="status" aria-live="polite"></div>
   <script src="script.js"></script>
 </body>
