@@ -389,3 +389,54 @@ body.review-open { overflow: hidden; }
   .review-lightbox button { width: 32px; height: 32px; font-size: 23px; }
   .review-lightbox-close { top: 12px; right: 12px; }
 }
+
+
+/* About section — personal, warm and concise */
+.about-card {
+  display: grid;
+  grid-template-columns: minmax(150px, 38%) minmax(0, 1fr);
+  align-items: stretch;
+  gap: 25px;
+  padding: 18px;
+  min-height: 100%;
+}
+.about-photo-wrap {
+  min-height: 100%;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #eadbd0;
+}
+.about-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 330px;
+  object-fit: cover;
+  object-position: center 28%;
+}
+.about-content { min-width: 0; padding: 14px 10px 12px 0; }
+.about-content h2 { margin: 13px 0 16px; font-size: clamp(23px, 2vw, 30px); line-height: 1.15; letter-spacing: -.9px; }
+.about-wave { font-size: .82em; }
+.about-card p { max-width: 520px; margin: 0 0 13px; color: var(--muted); font-size: 12px; line-height: 1.75; }
+.about-facts { display: flex; gap: 25px; margin: 20px 0 14px; padding: 14px 0; border-top: 1px solid #eadbd0; border-bottom: 1px solid #eadbd0; }
+.about-fact strong, .about-fact span { display: block; }
+.about-fact strong { color: var(--ink); font-size: 23px; line-height: 1.1; letter-spacing: -.7px; }
+.about-fact span { margin-top: 5px; color: var(--muted); font-size: 9px; line-height: 1.4; }
+.about-platforms { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; color: var(--ink); font-size: 10px; }
+.about-platforms i { color: var(--orange); font-style: normal; }
+.about-platforms span { flex-basis: 100%; margin-top: 3px; color: var(--muted); font-size: 9px; line-height: 1.5; }
+@media (max-width: 980px) {
+  .about-card { grid-template-columns: minmax(130px, 34%) minmax(0, 1fr); gap: 17px; }
+  .about-content { padding-right: 4px; }
+  .about-card p { font-size: 11px; }
+}
+@media (max-width: 700px) {
+  .about-card { grid-template-columns: 1fr; gap: 17px; padding: 16px; }
+  .about-photo-wrap { height: 250px; min-height: 0; }
+  .about-photo { min-height: 0; height: 100%; object-position: center 30%; }
+  .about-content { padding: 4px 7px 8px; }
+  .about-content h2 { font-size: 27px; }
+  .about-card p { font-size: 12px; line-height: 1.7; }
+  .about-facts { margin: 17px 0 12px; gap: 32px; }
+  .about-fact strong { font-size: 25px; }
+}
