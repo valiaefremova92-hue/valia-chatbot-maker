@@ -150,3 +150,62 @@ if (portfolioTrack) {
 
 window.addEventListener('load', updatePortfolioArrows);
 requestAnimationFrame(updatePortfolioArrows);
+
+
+// Client reviews gallery and full-screen viewer
+(() => {
+  const gallery = document.querySelector('#reviews-gallery');
+  const lightbox = document.querySelector('#review-lightbox');
+  const lightboxImage = document.querySelector('#review-lightbox-image');
+  if (!gallery || !lightbox || !lightboxImage) return;
+
+  const thumbs = [...gallery.querySelectorAll('[data-review-image]')];
+  const prev = document.querySelector('.reviews-arrow-prev');
+  const next = document.querySelector('.reviews-arrow-next');
+  let activeIndex = 0;
+
+  const updateGalleryArrows = () => {
+    const max = gallery.scrollWidth - gallery.clientWidth;
+    if (prev) prev.disabled = gallery.scrollLeft <= 2;
+    if (next) next.disabled = gallery.scrollLeft >= max - 2;
+  };
+  const step = () => {
+    const item = gallery.querySelector('.review-thumb');
+    return item ? item.getBoundingClientRect().width + 12 : gallery.clientWidth;
+  };
+  prev?.addEventListener('click', () => gallery.scrollBy({left: -step(), behavior: 'smooth'}));
+  next?.addEventListener('click', () => gallery.scrollBy({left: step(), behavior: 'smooth'}));
+  gallery.addEventListener('scroll', updateGalleryArrows, {passive:true});
+  window.addEventListener('resize', updateGalleryArrows);
+  window.addEventListener('load', updateGalleryArrows);
+  requestAnimationFrame(updateGalleryArrows);
+
+  const show = (index) => {
+    activeIndex = (index + thumbs.length) % thumbs.length;
+    lightboxImage.src = thumbs[activeIndex].dataset.reviewImage;
+    lightboxImage.alt = `Відгук клієнта ${activeIndex + 1}`;
+  };
+  const open = (index) => {
+    show(index);
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('review-open');
+  };
+  const close = () => {
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('review-open');
+    lightboxImage.src = '';
+  };
+  thumbs.forEach((thumb, index) => thumb.addEventListener('click', () => open(index)));
+  document.querySelector('.review-lightbox-close')?.addEventListener('click', close);
+  document.querySelector('.review-lightbox-prev')?.addEventListener('click', () => show(activeIndex - 1));
+  document.querySelector('.review-lightbox-next')?.addEventListener('click', () => show(activeIndex + 1));
+  lightbox.addEventListener('click', event => { if (event.target === lightbox) close(); });
+  document.addEventListener('keydown', event => {
+    if (!lightbox.classList.contains('open')) return;
+    if (event.key === 'Escape') close();
+    if (event.key === 'ArrowLeft') show(activeIndex - 1);
+    if (event.key === 'ArrowRight') show(activeIndex + 1);
+  });
+})();
